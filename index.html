@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Millanel | Perfumes - Registro PERFUME actualizado</title>
+    <title>Millanel | Perfumes - Tienda Online</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -350,16 +350,6 @@
             margin: 1rem 0;
             border-color: #eedfd6;
         }
-        .record-code {
-            background: #f1ebe6;
-            padding: 0.8rem;
-            border-radius: 20px;
-            font-family: monospace;
-            font-size: 0.7rem;
-            margin-bottom: 1rem;
-            color: #4f3422;
-            white-space: pre-wrap;
-        }
 
         .modal {
             display: none;
@@ -426,28 +416,10 @@
 <div class="app-container">
     <div class="header">
         <h1><i class="fas fa-spray-can-sparkles"></i> Millanel · Perfumería Sensorial</h1>
-        <p>Registro PERFUME actualizado | Clave primaria: Código</p>
+        <!-- Se eliminó el subtítulo "Registro PERFUME actualizado | clave primaria código" -->
     </div>
 
-    <!-- Representación exacta del Registro PERFUME según especificación -->
-    <div class="record-code">
-        <i class="fas fa-code"></i> <strong>Registro PERFUME (versión formal)</strong><br>
-        Registro PERFUME<br>
-        &nbsp;&nbsp;Codigo: Entero; (Clave primaria)<br>
-        &nbsp;&nbsp;Nombre: AN(100);<br>
-        &nbsp;&nbsp;Marca: AN(50);<br>
-        &nbsp;&nbsp;Concentracion: ("Eau de Cologne", "Eau de Toilette", "Eau de Parfum", "Parfum");<br>
-        &nbsp;&nbsp;VolumenMl: Entero;<br>
-        &nbsp;&nbsp;Precio: Real;<br>
-        &nbsp;&nbsp;Genero: ("Masculino", "Femenino", "Unisex");<br>
-        &nbsp;&nbsp;Stock: Entero;<br>
-        &nbsp;&nbsp;FechaLanzamiento = Registro<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Dia: (1..31);<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Mes: (1..12);<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Año: N(4);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-        &nbsp;&nbsp;Fin Registro;<br>
-        Fin Registro
-    </div>
+    <!-- Se eliminó el bloque .record-code (código de registro) -->
 
     <div class="shop-layout">
         <!-- CATÁLOGO DE PERFUMES -->
@@ -473,10 +445,10 @@
         </div>
     </div>
 
-    <!-- FORMULARIO NUEVO PRODUCTO (con restricciones del registro: día 1-31, mes 1-12, año 4 dígitos) -->
+    <!-- FORMULARIO NUEVO PRODUCTO -->
     <div class="form-section">
         <div class="form-title">
-            <i class="fas fa-plus-circle"></i> Añadir nuevo perfume (clave única + rangos)
+            <i class="fas fa-plus-circle"></i> Añadir nuevo perfume
         </div>
         <form id="newProductForm">
             <div class="form-grid">
@@ -522,7 +494,7 @@
                     <input type="number" id="prodStock" value="10" required>
                 </div>
                 <div class="input-group">
-                    <label>Fecha Lanzamiento (Día 1-31 / Mes 1-12 / Año 4 dígitos)</label>
+                    <label>Fecha Lanzamiento (Día / Mes / Año)</label>
                     <div class="date-group">
                         <input type="number" id="prodDia" placeholder="Día" value="1" min="1" max="31" step="1">
                         <input type="number" id="prodMes" placeholder="Mes" value="1" min="1" max="12" step="1">
@@ -533,8 +505,7 @@
             <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Agregar producto al catálogo</button>
             <div id="formFeedback" class="error-msg" style="margin-top:12px;"></div>
         </form>
-        <hr>
-        <small><i class="fas fa-key"></i> Demostración: <strong>Código único</strong> y rangos de fecha según <strong>Dia (1..31), Mes (1..12), Año N(4)</strong>.</small>
+        <!-- Se eliminó el hr y el small con el mensaje de demostración -->
     </div>
 </div>
 
@@ -552,7 +523,7 @@
 </div>
 
 <script>
-    // DATOS INICIALES (cumplen con el registro: día, mes, año dentro de rangos)
+    // DATOS INICIALES (cumplen con el registro)
     let productos = [
         {
             codigo: 1,
@@ -600,9 +571,8 @@
         }
     ];
 
-    let cart = []; // { productId, quantity }
+    let cart = [];
 
-    // ---------- FUNCIONES DEL CATÁLOGO Y CARRITO ----------
     function renderCatalog() {
         const container = document.getElementById('productsContainer');
         if (!container) return;
@@ -731,7 +701,6 @@
         }
     }
 
-    // Confirmación de compra con modal
     function showPurchaseConfirmation() {
         if (cart.length === 0) {
             alert("El carrito está vacío. Agrega productos primero.");
@@ -759,7 +728,6 @@
             cancelBtn.removeEventListener('click', closeModal);
         };
         const executePurchase = () => {
-            // Verificar stock actualizado
             let valid = true;
             for (let cartItem of cart) {
                 const prod = productos.find(p => p.codigo === cartItem.productId);
@@ -773,7 +741,6 @@
                 closeModal();
                 return;
             }
-            // Descontar stock
             for (let cartItem of cart) {
                 const prod = productos.find(p => p.codigo === cartItem.productId);
                 if (prod) prod.stock -= cartItem.quantity;
@@ -788,7 +755,6 @@
         cancelBtn.addEventListener('click', closeModal);
     }
 
-    // Agregar nuevo producto cumpliendo restricciones del registro PERFUME
     function addNewProduct(event) {
         event.preventDefault();
         const codigo = parseInt(document.getElementById('prodCodigo').value);
@@ -804,7 +770,6 @@
         let anio = parseInt(document.getElementById('prodAnio').value);
         const feedback = document.getElementById('formFeedback');
 
-        // Validación Código único (clave primaria)
         if (isNaN(codigo)) { feedback.innerText = "❌ Código inválido (número entero)."; return; }
         if (productos.some(p => p.codigo === codigo)) {
             feedback.innerText = `❌ El código ${codigo} ya existe. La clave primaria debe ser ÚNICA.`;
@@ -814,8 +779,6 @@
         if (isNaN(volumenMl) || volumenMl <= 0) { feedback.innerText = "Volumen debe ser > 0"; return; }
         if (isNaN(precio) || precio <= 0) { feedback.innerText = "Precio inválido"; return; }
         if (isNaN(stock) || stock < 0) { feedback.innerText = "Stock no negativo"; return; }
-
-        // Validación estricta según Registro PERFUME: Dia (1..31), Mes (1..12), Año N(4) (1000-9999)
         if (isNaN(dia) || dia < 1 || dia > 31) { feedback.innerText = "❌ Día debe estar entre 1 y 31."; return; }
         if (isNaN(mes) || mes < 1 || mes > 12) { feedback.innerText = "❌ Mes debe estar entre 1 y 12."; return; }
         if (isNaN(anio) || anio < 1000 || anio > 9999) { feedback.innerText = "❌ Año debe ser numérico de 4 dígitos (ej: 2024)."; return; }
@@ -827,7 +790,6 @@
         productos.push(nuevoProducto);
         renderCatalog();
 
-        // Reset campos (excepto algunos valores por defecto)
         document.getElementById('prodCodigo').value = '';
         document.getElementById('prodNombre').value = '';
         document.getElementById('prodMarca').value = '';
@@ -837,7 +799,7 @@
         document.getElementById('prodDia').value = 1;
         document.getElementById('prodMes').value = 1;
         document.getElementById('prodAnio').value = 2023;
-        feedback.innerHTML = '<span class="success-msg">✅ Producto agregado. Clave única y rangos de fecha validados.</span>';
+        feedback.innerHTML = '<span class="success-msg">✅ Producto agregado correctamente.</span>';
         setTimeout(() => { feedback.innerHTML = ''; }, 2500);
     }
 
@@ -851,7 +813,6 @@
         });
     }
 
-    // Delegación de eventos
     function setupEventDelegation() {
         document.getElementById('productsContainer')?.addEventListener('click', (e) => {
             const btn = e.target.closest('.btn-add');
