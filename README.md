@@ -25,3 +25,7 @@ Aplicación web funcional que permite:
 - Carrito dinámico con total actualizado y contador de ítems.
 - Modal de confirmación antes de finalizar la compra.
 - Diseño adaptable a dispositivos móviles.
+
+## 📝 Nota académica
+
+- Este proyecto demuestra la traducción de una estructura de datos tipo Registro a una aplicación interactiva, haciendo énfasis en la integridad referencial mediante una clave primaria y restricciones de dominio.
