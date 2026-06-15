@@ -17,3 +17,11 @@ Aplicación web funcional que permite:
 - HTML5 semántico y responsivo.
 - CSS3 (Flexbox, Grid, diseño tipo tarjetas).
 - JavaScript ES6 (manejo de estado, manipulación del DOM, validaciones).
+
+## ✅ Funcionalidades destacadas
+
+- Validación de clave primaria única al agregar productos.
+- Control de stock en tiempo real (no permite agregar más unidades de las disponibles).
+- Carrito dinámico con total actualizado y contador de ítems.
+- Modal de confirmación antes de finalizar la compra.
+- Diseño adaptable a dispositivos móviles.
