@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Millanel | Perfumes - Registro PERFUME actualizado</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: #f9f5f0;
+            color: #2c221b;
+            padding: 1.5rem;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            color: #b45f3b;
+            font-weight: 600;
+        }
+        .header h1 i {
+            margin-right: 8px;
+        }
+        .header p {
+            color: #6b4c3a;
+            font-style: italic;
+        }
+
+        .shop-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .catalog-section {
+            flex: 3;
+            min-width: 260px;
+        }
+        .cart-section {
+            flex: 1.2;
+            min-width: 280px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            padding: 1.2rem;
+            height: fit-content;
+            position: sticky;
+            top: 1.5rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .product-img {
+            background: #f2e6de;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: #b45f3b;
+        }
+        .product-info {
+            padding: 1rem 1.2rem 1.2rem;
+            flex: 1;
+        }
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #2c221b;
+        }
+        .product-brand {
+            color: #b45f3b;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        .product-details {
+            font-size: 0.8rem;
+            color: #5a4a3a;
+            margin: 0.5rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .product-details span {
+            background: #f2ece7;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+        }
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2c6e2f;
+            margin: 0.5rem 0;
+        }
+        .product-stock {
+            font-size: 0.75rem;
+            color: #6b4c3a;
+            margin-bottom: 1rem;
+        }
+        .btn-add {
+            background: #b45f3b;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 0.7rem 0;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-add:hover {
+            background: #9b4b2a;
+        }
+        .btn-add:disabled {
+            background: #cbaa94;
+            cursor: not-allowed;
+        }
+
+        .cart-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-bottom: 2px solid #f0e2d8;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .cart-badge {
+            background: #b45f3b;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        .cart-items {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eedfd6;
+        }
+        .cart-item-info {
+            flex: 2;
+        }
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .cart-item-price {
+            font-size: 0.8rem;
+            color: #6b4c3a;
+        }
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f9f5f0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 50px;
+        }
+        .qty-btn {
+            background: none;
+            border: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #e9ddd4;
+            transition: 0.1s;
+        }
+        .qty-btn:hover {
+            background: #d6c6ba;
+        }
+        .remove-item {
+            background: #d9c2b2;
+            margin-left: 4px;
+        }
+        .cart-total {
+            margin: 1rem 0;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: right;
+            border-top: 2px dashed #eedfd6;
+            padding-top: 0.8rem;
+            color: #2c6e2f;
+        }
+        .cart-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-checkout {
+            background: #2c6e2f;
+            color: white;
+            border: none;
+            flex: 2;
+            padding: 0.8rem;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-checkout:hover {
+            background: #1f5522;
+        }
+        .btn-clear {
+            background: #a05e3a;
+            color: white;
+            border: none;
+            flex: 1;
+            padding: 0.8rem;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-clear:hover {
+            background: #7e4629;
+        }
+        .empty-cart {
+            text-align: center;
+            color: #a1826c;
+            padding: 1rem;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .form-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .input-group label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #5a3f2e;
+        }
+        input, select {
+            padding: 0.6rem;
+            border-radius: 20px;
+            border: 1px solid #e2cfc2;
+            background: #fefaf7;
+            outline: none;
+        }
+        input:focus, select:focus {
+            border-color: #b45f3b;
+        }
+        .date-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .date-group input {
+            width: 80px;
+            text-align: center;
+        }
+        .btn-submit {
+            background: #b45f3b;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        .error-msg {
+            color: #c7362b;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        .success-msg {
+            color: #2c6e2f;
+        }
+        hr {
+            margin: 1rem 0;
+            border-color: #eedfd6;
+        }
+        .record-code {
+            background: #f1ebe6;
+            padding: 0.8rem;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 0.7rem;
+            margin-bottom: 1rem;
+            color: #4f3422;
+            white-space: pre-wrap;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            max-width: 480px;
+            width: 90%;
+            padding: 1.8rem;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .modal-content h3 {
+            color: #b45f3b;
+            margin-bottom: 1rem;
+        }
+        .modal-details {
+            text-align: left;
+            background: #f9f5f0;
+            padding: 0.8rem;
+            border-radius: 20px;
+            margin: 1rem 0;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .modal-buttons button {
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .confirm-btn {
+            background: #2c6e2f;
+            color: white;
+        }
+        .cancel-btn {
+            background: #c2a28b;
+            color: white;
+        }
+        @media (max-width: 780px) {
+            body { padding: 1rem; }
+            .cart-section { position: static; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <h1><i class="fas fa-spray-can-sparkles"></i> Millanel · Perfumería Sensorial</h1>
+        <p>Registro PERFUME actualizado | Clave primaria: Código</p>
+    </div>
+
+    <!-- Representación exacta del Registro PERFUME según especificación -->
+    <div class="record-code">
+        <i class="fas fa-code"></i> <strong>Registro PERFUME (versión formal)</strong><br>
+        Registro PERFUME<br>
+        &nbsp;&nbsp;Codigo: Entero; (Clave primaria)<br>
+        &nbsp;&nbsp;Nombre: AN(100);<br>
+        &nbsp;&nbsp;Marca: AN(50);<br>
+        &nbsp;&nbsp;Concentracion: ("Eau de Cologne", "Eau de Toilette", "Eau de Parfum", "Parfum");<br>
+        &nbsp;&nbsp;VolumenMl: Entero;<br>
+        &nbsp;&nbsp;Precio: Real;<br>
+        &nbsp;&nbsp;Genero: ("Masculino", "Femenino", "Unisex");<br>
+        &nbsp;&nbsp;Stock: Entero;<br>
+        &nbsp;&nbsp;FechaLanzamiento = Registro<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Dia: (1..31);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Mes: (1..12);<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Año: N(4);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+        &nbsp;&nbsp;Fin Registro;<br>
+        Fin Registro
+    </div>
+
+    <div class="shop-layout">
+        <!-- CATÁLOGO DE PERFUMES -->
+        <div class="catalog-section">
+            <h2><i class="fas fa-store"></i> Nuestros perfumes</h2>
+            <div id="productsContainer" class="products-grid"></div>
+        </div>
+
+        <!-- CARRITO DE COMPRAS -->
+        <div class="cart-section">
+            <div class="cart-title">
+                <span><i class="fas fa-shopping-cart"></i> Mi Carrito</span>
+                <span id="cartCount" class="cart-badge">0</span>
+            </div>
+            <div id="cartItemsContainer" class="cart-items">
+                <div class="empty-cart">🛒 Tu carrito está vacío</div>
+            </div>
+            <div id="cartTotal" class="cart-total">Total: $0.00</div>
+            <div class="cart-actions">
+                <button id="checkoutBtn" class="btn-checkout"><i class="fas fa-credit-card"></i> Comprar</button>
+                <button id="clearCartBtn" class="btn-clear"><i class="fas fa-trash-alt"></i> Vaciar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORMULARIO NUEVO PRODUCTO (con restricciones del registro: día 1-31, mes 1-12, año 4 dígitos) -->
+    <div class="form-section">
+        <div class="form-title">
+            <i class="fas fa-plus-circle"></i> Añadir nuevo perfume (clave única + rangos)
+        </div>
+        <form id="newProductForm">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Código * (Clave primaria)</label>
+                    <input type="number" id="prodCodigo" placeholder="Ej: 5" required>
+                </div>
+                <div class="input-group">
+                    <label>Nombre *</label>
+                    <input type="text" id="prodNombre" placeholder="Nombre del perfume" required>
+                </div>
+                <div class="input-group">
+                    <label>Marca *</label>
+                    <input type="text" id="prodMarca" placeholder="Marca" required>
+                </div>
+                <div class="input-group">
+                    <label>Concentración</label>
+                    <select id="prodConcentracion">
+                        <option>Eau de Cologne</option>
+                        <option>Eau de Toilette</option>
+                        <option selected>Eau de Parfum</option>
+                        <option>Parfum</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Volumen (ml)</label>
+                    <input type="number" id="prodVolumen" value="50" step="10" required>
+                </div>
+                <div class="input-group">
+                    <label>Precio ($)</label>
+                    <input type="number" id="prodPrecio" step="0.01" required>
+                </div>
+                <div class="input-group">
+                    <label>Género</label>
+                    <select id="prodGenero">
+                        <option>Masculino</option>
+                        <option>Femenino</option>
+                        <option>Unisex</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Stock inicial</label>
+                    <input type="number" id="prodStock" value="10" required>
+                </div>
+                <div class="input-group">
+                    <label>Fecha Lanzamiento (Día 1-31 / Mes 1-12 / Año 4 dígitos)</label>
+                    <div class="date-group">
+                        <input type="number" id="prodDia" placeholder="Día" value="1" min="1" max="31" step="1">
+                        <input type="number" id="prodMes" placeholder="Mes" value="1" min="1" max="12" step="1">
+                        <input type="number" id="prodAnio" placeholder="Año" value="2023" min="1000" max="9999" step="1">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Agregar producto al catálogo</button>
+            <div id="formFeedback" class="error-msg" style="margin-top:12px;"></div>
+        </form>
+        <hr>
+        <small><i class="fas fa-key"></i> Demostración: <strong>Código único</strong> y rangos de fecha según <strong>Dia (1..31), Mes (1..12), Año N(4)</strong>.</small>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMACIÓN DE COMPRA -->
+<div id="purchaseModal" class="modal">
+    <div class="modal-content">
+        <h3><i class="fas fa-shopping-bag"></i> Confirmar compra</h3>
+        <div id="modalOrderSummary" class="modal-details"></div>
+        <p>¿Deseas finalizar la compra?</p>
+        <div class="modal-buttons">
+            <button id="modalConfirmBtn" class="confirm-btn">Sí, comprar</button>
+            <button id="modalCancelBtn" class="cancel-btn">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DATOS INICIALES (cumplen con el registro: día, mes, año dentro de rangos)
+    let productos = [
+        {
+            codigo: 1,
+            nombre: "No.5 L’ORIGINAL",
+            marca: "Chanel",
+            concentracion: "Eau de Parfum",
+            volumenMl: 100,
+            precio: 129.99,
+            genero: "Femenino",
+            stock: 8,
+            fechaLanzamiento: { dia: 5, mes: 5, año: 1921 }
+        },
+        {
+            codigo: 2,
+            nombre: "Sauvage Elixir",
+            marca: "Dior",
+            concentracion: "Eau de Parfum",
+            volumenMl: 60,
+            precio: 98.50,
+            genero: "Masculino",
+            stock: 12,
+            fechaLanzamiento: { dia: 15, mes: 9, año: 2015 }
+        },
+        {
+            codigo: 3,
+            nombre: "Acqua di Gio",
+            marca: "Giorgio Armani",
+            concentracion: "Eau de Toilette",
+            volumenMl: 75,
+            precio: 85.00,
+            genero: "Masculino",
+            stock: 5,
+            fechaLanzamiento: { dia: 10, mes: 3, año: 1996 }
+        },
+        {
+            codigo: 4,
+            nombre: "La Vie Est Belle",
+            marca: "Lancôme",
+            concentracion: "Eau de Parfum",
+            volumenMl: 50,
+            precio: 110.00,
+            genero: "Femenino",
+            stock: 7,
+            fechaLanzamiento: { dia: 22, mes: 10, año: 2012 }
+        }
+    ];
+
+    let cart = []; // { productId, quantity }
+
+    // ---------- FUNCIONES DEL CATÁLOGO Y CARRITO ----------
+    function renderCatalog() {
+        const container = document.getElementById('productsContainer');
+        if (!container) return;
+        if (productos.length === 0) {
+            container.innerHTML = '<div style="grid-column:1/-1; text-align:center">No hay perfumes disponibles. Añade uno nuevo.</div>';
+            return;
+        }
+        let html = '';
+        productos.forEach(prod => {
+            const stockStatus = prod.stock > 0 ? `Stock: ${prod.stock} uds` : '❌ Agotado';
+            const disabledAttr = prod.stock <= 0 ? 'disabled' : '';
+            html += `
+                <div class="product-card">
+                    <div class="product-img"><i class="fas fa-perfume"></i></div>
+                    <div class="product-info">
+                        <div class="product-name">${escapeHtml(prod.nombre)}</div>
+                        <div class="product-brand">${escapeHtml(prod.marca)}</div>
+                        <div class="product-details">
+                            <span>${prod.concentracion}</span>
+                            <span>${prod.volumenMl} ml</span>
+                            <span>${prod.genero}</span>
+                        </div>
+                        <div class="product-price">$${prod.precio.toFixed(2)}</div>
+                        <div class="product-stock">${stockStatus}</div>
+                        <button class="btn-add" data-id="${prod.codigo}" ${disabledAttr}>
+                            <i class="fas fa-cart-plus"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function renderCart() {
+        const cartContainer = document.getElementById('cartItemsContainer');
+        const cartTotalSpan = document.getElementById('cartTotal');
+        const cartCountSpan = document.getElementById('cartCount');
+        if (!cartContainer) return;
+
+        if (cart.length === 0) {
+            cartContainer.innerHTML = '<div class="empty-cart">🛒 Tu carrito está vacío</div>';
+            if (cartTotalSpan) cartTotalSpan.innerText = 'Total: $0.00';
+            if (cartCountSpan) cartCountSpan.innerText = '0';
+            return;
+        }
+
+        let total = 0;
+        let totalItems = 0;
+        let itemsHtml = '';
+        for (let cartItem of cart) {
+            const product = productos.find(p => p.codigo === cartItem.productId);
+            if (!product) continue;
+            const subtotal = product.precio * cartItem.quantity;
+            total += subtotal;
+            totalItems += cartItem.quantity;
+            itemsHtml += `
+                <div class="cart-item" data-id="${product.codigo}">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${escapeHtml(product.nombre)}</div>
+                        <div class="cart-item-price">$${product.precio.toFixed(2)} c/u</div>
+                    </div>
+                    <div class="cart-item-qty">
+                        <button class="qty-btn decr-cart" data-id="${product.codigo}">−</button>
+                        <span style="min-width:28px; text-align:center;">${cartItem.quantity}</span>
+                        <button class="qty-btn incr-cart" data-id="${product.codigo}">+</button>
+                        <button class="qty-btn remove-item" data-id="${product.codigo}">🗑️</button>
+                    </div>
+                </div>
+            `;
+        }
+        cartContainer.innerHTML = itemsHtml;
+        if (cartTotalSpan) cartTotalSpan.innerText = `Total: $${total.toFixed(2)}`;
+        if (cartCountSpan) cartCountSpan.innerText = totalItems;
+    }
+
+    function addToCart(productId, quantityToAdd = 1) {
+        const product = productos.find(p => p.codigo === productId);
+        if (!product) return false;
+        if (product.stock <= 0) {
+            alert(`❌ "${product.nombre}" está agotado.`);
+            return false;
+        }
+        const existing = cart.find(item => item.productId === productId);
+        const newQty = existing ? existing.quantity + quantityToAdd : quantityToAdd;
+        if (newQty > product.stock) {
+            alert(`Stock insuficiente. Solo hay ${product.stock} unidades de "${product.nombre}".`);
+            return false;
+        }
+        if (existing) {
+            existing.quantity = newQty;
+        } else {
+            cart.push({ productId, quantity: quantityToAdd });
+        }
+        renderCart();
+        return true;
+    }
+
+    function updateCartQuantity(productId, delta) {
+        const index = cart.findIndex(item => item.productId === productId);
+        if (index === -1) return;
+        const product = productos.find(p => p.codigo === productId);
+        if (!product) return;
+        const newQty = cart[index].quantity + delta;
+        if (newQty <= 0) {
+            cart.splice(index, 1);
+        } else if (newQty <= product.stock) {
+            cart[index].quantity = newQty;
+        } else {
+            alert(`No puedes superar el stock disponible (${product.stock} unidades).`);
+            return;
+        }
+        renderCart();
+    }
+
+    function removeCartItem(productId) {
+        cart = cart.filter(item => item.productId !== productId);
+        renderCart();
+    }
+
+    function clearCart() {
+        if (cart.length === 0) return;
+        if (confirm("¿Vaciar todo el carrito?")) {
+            cart = [];
+            renderCart();
+        }
+    }
+
+    // Confirmación de compra con modal
+    function showPurchaseConfirmation() {
+        if (cart.length === 0) {
+            alert("El carrito está vacío. Agrega productos primero.");
+            return;
+        }
+        let summaryHtml = `<strong>Resumen de tu pedido:</strong><br><br>`;
+        let total = 0;
+        for (let cartItem of cart) {
+            const prod = productos.find(p => p.codigo === cartItem.productId);
+            if (!prod) continue;
+            const subtotal = prod.precio * cartItem.quantity;
+            total += subtotal;
+            summaryHtml += `• ${escapeHtml(prod.nombre)} x${cartItem.quantity} = $${subtotal.toFixed(2)}<br>`;
+        }
+        summaryHtml += `<br><strong>Total: $${total.toFixed(2)}</strong>`;
+        document.getElementById('modalOrderSummary').innerHTML = summaryHtml;
+        const modal = document.getElementById('purchaseModal');
+        modal.style.display = 'flex';
+
+        const confirmBtn = document.getElementById('modalConfirmBtn');
+        const cancelBtn = document.getElementById('modalCancelBtn');
+        const closeModal = () => {
+            modal.style.display = 'none';
+            confirmBtn.removeEventListener('click', executePurchase);
+            cancelBtn.removeEventListener('click', closeModal);
+        };
+        const executePurchase = () => {
+            // Verificar stock actualizado
+            let valid = true;
+            for (let cartItem of cart) {
+                const prod = productos.find(p => p.codigo === cartItem.productId);
+                if (!prod || cartItem.quantity > prod.stock) {
+                    alert(`Error: Stock insuficiente para "${prod?.nombre}". Actualiza tu carrito.`);
+                    valid = false;
+                    break;
+                }
+            }
+            if (!valid) {
+                closeModal();
+                return;
+            }
+            // Descontar stock
+            for (let cartItem of cart) {
+                const prod = productos.find(p => p.codigo === cartItem.productId);
+                if (prod) prod.stock -= cartItem.quantity;
+            }
+            alert(`✅ ¡Compra realizada con éxito!\n\nTotal pagado: $${total.toFixed(2)}\nGracias por confiar en Millanel.`);
+            cart = [];
+            renderCatalog();
+            renderCart();
+            closeModal();
+        };
+        confirmBtn.addEventListener('click', executePurchase);
+        cancelBtn.addEventListener('click', closeModal);
+    }
+
+    // Agregar nuevo producto cumpliendo restricciones del registro PERFUME
+    function addNewProduct(event) {
+        event.preventDefault();
+        const codigo = parseInt(document.getElementById('prodCodigo').value);
+        const nombre = document.getElementById('prodNombre').value.trim();
+        const marca = document.getElementById('prodMarca').value.trim();
+        const concentracion = document.getElementById('prodConcentracion').value;
+        const volumenMl = parseInt(document.getElementById('prodVolumen').value);
+        const precio = parseFloat(document.getElementById('prodPrecio').value);
+        const genero = document.getElementById('prodGenero').value;
+        const stock = parseInt(document.getElementById('prodStock').value);
+        let dia = parseInt(document.getElementById('prodDia').value);
+        let mes = parseInt(document.getElementById('prodMes').value);
+        let anio = parseInt(document.getElementById('prodAnio').value);
+        const feedback = document.getElementById('formFeedback');
+
+        // Validación Código único (clave primaria)
+        if (isNaN(codigo)) { feedback.innerText = "❌ Código inválido (número entero)."; return; }
+        if (productos.some(p => p.codigo === codigo)) {
+            feedback.innerText = `❌ El código ${codigo} ya existe. La clave primaria debe ser ÚNICA.`;
+            return;
+        }
+        if (!nombre || !marca) { feedback.innerText = "❌ Nombre y Marca son obligatorios."; return; }
+        if (isNaN(volumenMl) || volumenMl <= 0) { feedback.innerText = "Volumen debe ser > 0"; return; }
+        if (isNaN(precio) || precio <= 0) { feedback.innerText = "Precio inválido"; return; }
+        if (isNaN(stock) || stock < 0) { feedback.innerText = "Stock no negativo"; return; }
+
+        // Validación estricta según Registro PERFUME: Dia (1..31), Mes (1..12), Año N(4) (1000-9999)
+        if (isNaN(dia) || dia < 1 || dia > 31) { feedback.innerText = "❌ Día debe estar entre 1 y 31."; return; }
+        if (isNaN(mes) || mes < 1 || mes > 12) { feedback.innerText = "❌ Mes debe estar entre 1 y 12."; return; }
+        if (isNaN(anio) || anio < 1000 || anio > 9999) { feedback.innerText = "❌ Año debe ser numérico de 4 dígitos (ej: 2024)."; return; }
+
+        const nuevoProducto = {
+            codigo, nombre, marca, concentracion, volumenMl, precio, genero, stock,
+            fechaLanzamiento: { dia, mes, año: anio }
+        };
+        productos.push(nuevoProducto);
+        renderCatalog();
+
+        // Reset campos (excepto algunos valores por defecto)
+        document.getElementById('prodCodigo').value = '';
+        document.getElementById('prodNombre').value = '';
+        document.getElementById('prodMarca').value = '';
+        document.getElementById('prodVolumen').value = 50;
+        document.getElementById('prodPrecio').value = '';
+        document.getElementById('prodStock').value = 10;
+        document.getElementById('prodDia').value = 1;
+        document.getElementById('prodMes').value = 1;
+        document.getElementById('prodAnio').value = 2023;
+        feedback.innerHTML = '<span class="success-msg">✅ Producto agregado. Clave única y rangos de fecha validados.</span>';
+        setTimeout(() => { feedback.innerHTML = ''; }, 2500);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Delegación de eventos
+    function setupEventDelegation() {
+        document.getElementById('productsContainer')?.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-add');
+            if (btn && btn.dataset.id) addToCart(parseInt(btn.dataset.id), 1);
+        });
+        document.getElementById('cartItemsContainer')?.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.classList.contains('incr-cart')) {
+                updateCartQuantity(parseInt(target.dataset.id), 1);
+            } else if (target.classList.contains('decr-cart')) {
+                updateCartQuantity(parseInt(target.dataset.id), -1);
+            } else if (target.classList.contains('remove-item')) {
+                removeCartItem(parseInt(target.dataset.id));
+            }
+        });
+        document.getElementById('checkoutBtn')?.addEventListener('click', showPurchaseConfirmation);
+        document.getElementById('clearCartBtn')?.addEventListener('click', clearCart);
+        document.getElementById('newProductForm')?.addEventListener('submit', addNewProduct);
+
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('purchaseModal');
+            if (e.target === modal) modal.style.display = 'none';
+        });
+    }
+
+    function init() {
+        renderCatalog();
+        renderCart();
+        setupEventDelegation();
+    }
+    init();
+</script>
+</body>
+</html>
